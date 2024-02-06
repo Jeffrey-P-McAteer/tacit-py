@@ -2,7 +2,23 @@
 name = "tacit-py"
 version = "0.1.0"
 edition = "2021"
+authors = ["Jeffrey McAteer <jeffrey@jmcateer.com>"]
 
-# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [dependencies]
+
+
+[dependencies.pyembed]
+version = "0.24"
+features = ["allocator-jemalloc"]
+
+
+[profile.release]
+incremental = false
+codegen-units = 1
+panic = "abort"
+#opt-level = "s"
+opt-level = 3
+lto = true
+
+
