@@ -1,0 +1,8 @@
+
+script-site-packages
+script-site-packages/
+repl-site-packages
+repl-site-packages/
+
+# Added by cargo
+/target
