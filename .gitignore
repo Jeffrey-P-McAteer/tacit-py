@@ -4,5 +4,8 @@ script-site-packages/
 repl-site-packages
 repl-site-packages/
 
+pyembedded
+pyembedded/
+
 # Added by cargo
 /target

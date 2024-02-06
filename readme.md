@@ -28,6 +28,22 @@ Specific goals are:
 The high-level goals are to enable execution of python scripts on machines which may not have a
 python runtime or packages installed in an environment to run the script.
 
+# Building
+
+You will need a copy of `python` (any version >3.9 or so) and `cargo` available.
+
+```bash
+python build.py
+```
+
+
+# Distro-specific woes
+
+Arch Linux does not ship the older version of `libcrypt.so.1` which `pyoxidizer` assumes exists for it's copy of `python3.10`.
+
+```bash
+sudo pacman -S libxcrypt-compat
+```
 
 
 

@@ -8,9 +8,9 @@ authors = ["Jeffrey McAteer <jeffrey@jmcateer.com>"]
 [dependencies]
 
 
-[dependencies.pyembed]
-version = "0.24"
-features = ["allocator-jemalloc"]
+[dependencies.pyo3]
+version = "0.20"
+features = ["abi3", "abi3-py310"]
 
 
 [profile.release]
