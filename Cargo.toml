@@ -6,6 +6,7 @@ authors = ["Jeffrey McAteer <jeffrey@jmcateer.com>"]
 
 
 [dependencies]
+include_dir = "0.7"
 
 
 [dependencies.pyo3]
