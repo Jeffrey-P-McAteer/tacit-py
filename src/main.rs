@@ -2,7 +2,7 @@ use pyo3::prelude::*;
 
 static PYEMBEDDED_STDLIB_DIR: include_dir::Dir<'_> = include_dir::include_dir!("pyembedded/stdlib");
 
-fn main() -> PyResult<()> {
+fn main() {
   // We embed the folder pyembedded/stdlib at build-time; at run-time python expects to find
   // this at PYTHONPATH, so we extract & assign PYTHONPATH to the system temp dir.
   let mut pyembedded_stdlib = std::env::temp_dir();
@@ -13,11 +13,32 @@ fn main() -> PyResult<()> {
   }
   extract_children(&PYEMBEDDED_STDLIB_DIR, &pyembedded_stdlib);
   std::env::set_var("PYTHONPATH", pyembedded_stdlib.into_os_string() );
-  unsafe {
-    pyo3::with_embedded_python_interpreter(|py| {
+
+
+  // let r = unsafe {
+  //   pyo3::with_embedded_python_interpreter(|py| {
+  //       py.run("print('hello, world'); import code; code.interact()", None, None)
+  //   })
+  // };
+  // if let Err(e) = r {
+  //   println!("{:?}", e);
+  // }
+
+  let r = {
+    pyo3::prepare_freethreaded_python();
+    pyo3::Python::with_gil(|py| {
         py.run("print('hello, world'); import code; code.interact()", None, None)
     })
+  };
+  if let Err(e) = r {
+    if format!("{:?}", e).contains("value: SystemExit") {
+      // NOP
+    }
+    else {
+      println!("{:?}", e);
+    }
   }
+
 }
 
 fn extract_children(embedded_dir: &include_dir::Dir, real_dir: &std::path::PathBuf) {
