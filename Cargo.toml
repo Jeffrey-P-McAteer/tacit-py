@@ -14,7 +14,8 @@ egui_extras = "0.26"
 
 [dependencies.pyo3]
 version = "0.20"
-features = ["abi3", "abi3-py310"]
+#features = ["abi3", "abi3-py310"]
+features = ["abi3"]
 
 
 
