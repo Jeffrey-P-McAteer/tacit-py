@@ -1,4 +1,7 @@
 
+#![cfg_attr(target_os = "windows", windows_subsystem = "console")]
+// ^^ "windows" will not allocate a console on windows
+
 use eframe::egui;
 
 use pyo3::prelude::*;
