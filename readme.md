@@ -45,5 +45,8 @@ Arch Linux does not ship the older version of `libcrypt.so.1` which `pyoxidizer`
 sudo pacman -S libxcrypt-compat
 ```
 
+# Research
 
+ - https://rustpython.github.io/
+ 
 
