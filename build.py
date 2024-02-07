@@ -39,7 +39,7 @@ def main():
 
   pyembedded_dir = os.path.join(os.path.dirname(__file__), 'pyembedded')
   if not os.path.exists(pyembedded_dir):
-    subprocess.run('pyoxidizer generate-python-embedding-artifacts'.split() + [ pyembedded_dir ], check=True)
+    subprocess.run('pyoxidizer generate-python-embedding-artifacts --flavor standalone_static'.split() + [ pyembedded_dir ], check=True)
 
   # Perform the build
   os.environ['PYO3_CONFIG_FILE'] = os.path.join(pyembedded_dir, 'pyo3-build-config-file.txt')
