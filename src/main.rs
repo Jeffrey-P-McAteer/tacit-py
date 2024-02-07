@@ -3,6 +3,12 @@ use pyo3::prelude::*;
 static PYEMBEDDED_STDLIB_DIR: include_dir::Dir<'_> = include_dir::include_dir!("pyembedded/stdlib");
 
 fn main() {
+  // On windows, we compile as a console app and dynamically hide the console;
+  // if launched from start menu / explorer.exe, no console.
+  // If launched from console, keep console.
+  #[cfg(target_os = "windows")]
+  hide_console_on_windows_win();
+
   // We embed the folder pyembedded/stdlib at build-time; at run-time python expects to find
   // this at PYTHONPATH, so we extract & assign PYTHONPATH to the system temp dir.
   let mut pyembedded_stdlib = std::env::temp_dir();
@@ -14,15 +20,6 @@ fn main() {
   extract_children(&PYEMBEDDED_STDLIB_DIR, &pyembedded_stdlib);
   std::env::set_var("PYTHONPATH", pyembedded_stdlib.into_os_string() );
 
-
-  // let r = unsafe {
-  //   pyo3::with_embedded_python_interpreter(|py| {
-  //       py.run("print('hello, world'); import code; code.interact()", None, None)
-  //   })
-  // };
-  // if let Err(e) = r {
-  //   println!("{:?}", e);
-  // }
 
   let r = {
     pyo3::prepare_freethreaded_python();
@@ -72,3 +69,18 @@ fn extract_children(embedded_dir: &include_dir::Dir, real_dir: &std::path::PathB
   }
 }
 
+
+#[cfg(target_os = "windows")]
+fn hide_console_on_windows_win() {
+    // Check if we are run from the console or just launched with explorer.exe
+    let mut console_proc_list_buff: Vec<u32> = vec![0; 16];
+    let num_procs = unsafe {
+        winapi::um::wincon::GetConsoleProcessList(console_proc_list_buff.as_mut_ptr(), 16)
+    };
+    //eprintln!("num_procs={:?}", num_procs);
+    if num_procs == 1 || num_procs == 2 {
+        // We were launched from explorer.exe, detatch the console
+        unsafe { winapi::um::wincon::FreeConsole() };
+    }
+    // Otherwise do nothing, we want console messages when run from the console.
+}

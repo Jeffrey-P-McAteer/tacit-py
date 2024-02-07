@@ -13,6 +13,13 @@ include_dir = "0.7"
 version = "0.20"
 features = ["abi3", "abi3-py310"]
 
+[target.x86_64-pc-windows-gnu.dependencies]
+winapi = {version = "0.3", features = ["wincon", "winuser"]}
+
+[target.x86_64-pc-windows-msvc.dependencies]
+winapi = {version = "0.3", features = ["wincon", "winuser"]}
+
+
 
 [profile.release]
 incremental = false
